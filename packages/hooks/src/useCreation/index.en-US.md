@@ -32,13 +32,13 @@ const b = useCreation(() => new Subject(), []) // By using factory function, Sub
 ## API
 
 ```javascript
-function useCreation<T>(factory: () => T, deps: any[]): T;
+function useCreation<T>(factory: (prevValue?: T) => T, deps: any[]): T;
 ```
 
 ### Params
 
 | Property | Description                  | Type   | Default |
 |---------|----------------------------------------------|------------------------|--------|
-| factory | A function used for creating the object.  | () => any | -      |
+| factory | A function used for creating the object.  | (prevValue?: T) => any | -      |
 | deps | The dependencies list. | any[] | -      |
 
