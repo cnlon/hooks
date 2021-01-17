@@ -8,16 +8,31 @@ const DEFAULT_OPTIONS: Options = {
   restoreOnUnmount: false,
 };
 
+const pending = {
+  title: '',
+};
+
 function useTitle(title: string, options: Options = DEFAULT_OPTIONS) {
-  const titleRef = useRef(document.title);
+  pending.title = title; // 仅使用最后一次设置的标题
+  const titleRef = useRef<string | null>(null);
   useEffect(() => {
+    if (title !== pending.title) {
+      return;
+    }
     document.title = title;
+    if (titleRef.current === null) {
+      // 仅保存第一次成功设置的标题
+      titleRef.current = title;
+    }
   }, [title]);
 
   useEffect(() => {
     if (options && options.restoreOnUnmount) {
       return () => {
-        document.title = titleRef.current;
+        if (titleRef.current !== null) {
+          // 恢复第一次成功设置的标题
+          document.title = titleRef.current;
+        }
       };
     }
   }, []);
